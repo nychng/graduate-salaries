@@ -1,0 +1,11 @@
+node_modules
+dist
+*.local
+.DS_Store
+
+# Data files (CSV + PDFs are source data, not committed)
+*.csv
+*.pdf
+
+# Generated data outside app (rebuild with scripts/prepare_data.py)
+/src/
