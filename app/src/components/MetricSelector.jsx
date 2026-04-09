@@ -21,13 +21,13 @@ const FOOTNOTES_MAP = Object.fromEntries(FOOTNOTES.map(f => [f.label, f.text]));
 function FootnoteLabel({ group, index }) {
   const [open, setOpen] = useState(false);
   const note = FOOTNOTES_MAP[group];
-  if (!note) return <span className="text-xs text-gray-400 mr-1">{group}:</span>;
+  if (!note) return <span className="text-xs text-muted mr-2">{group}:</span>;
 
   return (
-    <span className="text-xs text-gray-400 mr-1 relative">
+    <span className="text-xs text-muted mr-2 relative">
       {group}
       <sup
-        className="text-blue-500 cursor-help ml-0.5"
+        className="text-accent cursor-help ml-0.5"
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         onClick={() => setOpen(!open)}
@@ -36,7 +36,7 @@ function FootnoteLabel({ group, index }) {
       </sup>
       :
       {open && (
-        <span className="absolute left-0 top-5 z-10 w-72 p-2 bg-white border border-gray-200 rounded-lg shadow-lg text-[11px] leading-relaxed text-gray-600 font-normal normal-case tracking-normal">
+        <span className="absolute left-0 top-5 z-10 w-72 p-3 bg-cream border border-rule text-[11px] leading-relaxed text-muted font-normal normal-case tracking-normal shadow-sm">
           {note}
         </span>
       )}
@@ -54,7 +54,7 @@ export default function MetricSelector({ selected, onChange }) {
 
   return (
     <div>
-      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+      <label className="block text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
         Metric
       </label>
       <div className="flex flex-wrap gap-x-6 gap-y-2">
@@ -66,10 +66,10 @@ export default function MetricSelector({ selected, onChange }) {
                 key={key}
                 onClick={() => onChange(key)}
                 className={`
-                  px-2.5 py-1 rounded-md text-xs font-medium transition-all duration-150
+                  px-3 py-1.5 text-xs transition-all duration-100 border
                   ${selected === key
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'bg-white text-gray-600 border border-gray-200 hover:border-blue-300 hover:text-blue-700'
+                    ? 'bg-ink text-cream border-ink'
+                    : 'bg-transparent text-muted border-rule hover:border-ink hover:text-ink'
                   }
                 `}
               >

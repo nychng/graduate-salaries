@@ -125,6 +125,35 @@ def normalize_degree(name):
     name = name.replace('ElectroMechanical', 'Electromechanical')
     # Normalize "Art, Design & Media" -> "Art, Design and Media"
     name = name.replace('Art, Design & Media', 'Art, Design and Media')
+    # Normalize Sport/Sports Science variants
+    if 'Sport' in name and 'Management' in name:
+        name = 'Sports Science and Management'
+    # Normalize Interdisciplinary Double Major variants
+    if 'nter' in name and 'isciplin' in name and ('Double' in name or 'Integrated' in name):
+        name = 'Interdisciplinary Double Major'
+    # Normalize Physics and Applied Physics variants
+    if 'Physics' in name and 'Applied Physics' in name:
+        name = 'Physics and Applied Physics'
+    # NTU NIE: normalize Arts/Science Education variants
+    if name in ('Arts (and Education)', 'Arts (Academic Discipline and Education)',
+                'Bachelor of Arts (Hons) (Education)'):
+        name = 'Arts (with Education)'
+    if name in ('Science (and Education)', 'Science (Academic Discipline and Education)',
+                'Bachelor of Science (Hons) (Education)'):
+        name = 'Science (with Education)'
+    # SIT: normalize Digital Arts & Animation
+    name = name.replace('Digital Arts & Animation', 'Digital Art and Animation')
+    # SMU: strip "(4-year programme)" / "(4-years programme)" suffix from degree names
+    name = re.sub(r'\s*\(4-years? programme\)\s*', '', name).strip()
+    # SMU: normalize all "X Cum Laude and above" / "X (Cum Laude and above)" / "X - Cum Laude and above" to "Cum Laude and above"
+    if 'Cum Laude' in name and name != 'Cum Laude and above':
+        name = 'Cum Laude and above'
+    # Normalize Mathematical Science(s) variants — only exact matches, not compound degrees
+    if name in ('Mathematical Science', 'Mathematical Sciences',
+                'Bachelor of Science (Hons) in Mathematical Sciences',
+                'Mathematical Sciences / Mathematical Sciences and Economics',
+                'Mathematics and Mathematical Sciences'):
+        name = 'Mathematical Sciences'
     return name.strip()
 
 
@@ -286,7 +315,7 @@ def extract_pdf_data(university, pdf_path):
                 "year": 2025,
                 "university": university,
                 "school": school,
-                "degree": degree,
+                "degree": normalize_degree(degree),
                 "employment_rate_overall": employment_rate_overall,
                 "employment_rate_ft_perm": employment_rate_ft_perm,
                 "basic_monthly_mean": basic_mean,
@@ -320,6 +349,22 @@ def main():
 
     # Merge
     all_data = csv_rows + all_pdf_rows
+
+    # Reclassify NTU degrees that moved from College of Engineering to CCDS in 2024
+    CCDS_DEGREES = {
+        "Computer Engineering",
+        "Computer Science",
+        "Data Science and Artificial Intelligence",
+    }
+    reclassified = 0
+    for row in all_data:
+        if (row["university"] == "Nanyang Technological University"
+                and row["degree"] in CCDS_DEGREES
+                and row["school"] == "College of Engineering"):
+            row["school"] = "College of Computing and Data Science"
+            reclassified += 1
+    print(f"Reclassified {reclassified} NTU rows from College of Engineering to CCDS")
+
     print(f"Total combined: {len(all_data)} rows")
 
     # Ensure output directory exists

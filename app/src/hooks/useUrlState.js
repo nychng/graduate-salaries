@@ -1,6 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 
+const DEFAULT_STATE = {
+  universities: [],
+  schools: [],
+  degrees: [],
+  metric: 'gross_monthly_median',
+};
+
 function parseHash() {
+  if (typeof window === 'undefined') return DEFAULT_STATE;
   const hash = window.location.hash.slice(1);
   const params = new URLSearchParams(hash);
   return {
@@ -21,9 +29,11 @@ function toHash(state) {
 }
 
 export function useUrlState() {
-  const [state, setState] = useState(parseHash);
+  const [state, setState] = useState(DEFAULT_STATE);
 
+  // Parse hash on client mount
   useEffect(() => {
+    setState(parseHash());
     const handler = () => setState(parseHash());
     window.addEventListener('hashchange', handler);
     return () => window.removeEventListener('hashchange', handler);

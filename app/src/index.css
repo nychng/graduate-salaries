@@ -7,12 +7,13 @@
   --color-smu: #002664;
   --color-suss: #5B2C8E;
   --color-sutd: #A6192E;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --color-cream: #FAF8F5;
+  --color-ink: #1A1A1A;
+  --color-rule: #D4D0C8;
+  --color-muted: #6B6560;
+  --color-accent: #B8432F;
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
 }
 
-@layer base {
-  body {
-    @apply antialiased bg-gray-50 text-gray-900;
-    margin: 0;
-  }
-}
+@plugin "@tailwindcss/typography";

@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title="Blog | Singapore Graduate Employment Survey Explorer"
+  description="Articles and analysis on graduate employment outcomes and salaries in Singapore."
+  ogTitle="GES Explorer Blog"
+  ogDescription="Articles and analysis on graduate employment outcomes and salaries in Singapore."
+>
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <h1 class="font-serif text-4xl font-bold text-ink tracking-tight mb-2">Blog</h1>
+    <p class="text-sm text-muted mb-8">Analysis and insights from the Graduate Employment Survey data.</p>
+    {posts.length === 0 && (
+      <p class="text-muted italic">No posts yet.</p>
+    )}
+    <div class="divide-y divide-rule">
+      {posts.map((post) => (
+        <a href={`/blog/${post.id}/`} class="block py-6 group">
+          <time datetime={post.data.pubDate.toISOString()} class="text-[10px] uppercase tracking-[0.15em] text-muted">
+            {post.data.pubDate.toLocaleDateString('en-SG', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </time>
+          <h2 class="font-serif text-xl font-bold text-ink mt-1 mb-1 group-hover:text-accent transition-colors">{post.data.title}</h2>
+          <p class="text-sm text-muted leading-relaxed">{post.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

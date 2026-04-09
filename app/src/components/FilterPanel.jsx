@@ -1,8 +1,7 @@
-import { getUniversities, getSchools, getDegrees, UNI_SHORT } from '../lib/data';
+import { getUniversities, getSchools, getDegreeSplit, UNI_SHORT } from '../lib/data';
 
 function SingleSelect({ label, options, selected, onChange, renderOption }) {
   const toggle = (value) => {
-    // Single select: clicking the same value deselects, otherwise replace
     if (selected === value) {
       onChange(null);
     } else {
@@ -12,7 +11,7 @@ function SingleSelect({ label, options, selected, onChange, renderOption }) {
 
   return (
     <div>
-      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+      <label className="block text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
         {label}
       </label>
       <div className="flex flex-wrap gap-1.5">
@@ -23,10 +22,10 @@ function SingleSelect({ label, options, selected, onChange, renderOption }) {
               key={opt}
               onClick={() => toggle(opt)}
               className={`
-                px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-150
+                px-3 py-1.5 text-xs transition-all duration-100 border
                 ${isActive
-                  ? 'bg-gray-900 text-white shadow-sm'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-400 hover:text-gray-900'
+                  ? 'bg-ink text-cream border-ink'
+                  : 'bg-transparent text-muted border-rule hover:border-ink hover:text-ink'
                 }
               `}
             >
@@ -39,6 +38,62 @@ function SingleSelect({ label, options, selected, onChange, renderOption }) {
   );
 }
 
+function DegreePicker({ university, school, selected, onChange }) {
+  const { current, historical } = getDegreeSplit(
+    university ? [university] : [],
+    school ? [school] : []
+  );
+
+  const toggle = (value) => {
+    onChange(selected === value ? null : value);
+  };
+
+  const renderButtons = (options) =>
+    options.map((opt) => {
+      const isActive = selected === opt;
+      return (
+        <button
+          key={opt}
+          onClick={() => toggle(opt)}
+          className={`
+            px-3 py-1.5 text-xs transition-all duration-100 border
+            ${isActive
+              ? 'bg-ink text-cream border-ink'
+              : 'bg-transparent text-muted border-rule hover:border-ink hover:text-ink'
+            }
+          `}
+        >
+          {opt}
+        </button>
+      );
+    });
+
+  return (
+    <div className="space-y-4">
+      {current.length > 0 && (
+        <div>
+          <label className="block text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
+            Current Degrees
+          </label>
+          <div className="flex flex-wrap gap-1.5">
+            {renderButtons(current)}
+          </div>
+        </div>
+      )}
+      {historical.length > 0 && (
+        <div>
+          <label className="block text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
+            Historical Degrees
+          </label>
+          <div className="flex flex-wrap gap-1.5">
+            {renderButtons(historical)}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function FilterPanel({ state, onUpdate }) {
   const university = state.universities[0] || null;
   const school = state.schools[0] || null;
@@ -46,10 +101,9 @@ export default function FilterPanel({ state, onUpdate }) {
 
   const universities = getUniversities();
   const schools = university ? getSchools([university]) : [];
-  const degrees = school ? getDegrees([university], [school]) : [];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <SingleSelect
         label="University"
         options={universities}
@@ -67,10 +121,10 @@ export default function FilterPanel({ state, onUpdate }) {
         />
       )}
 
-      {school && degrees.length > 0 && (
-        <SingleSelect
-          label="Degree"
-          options={degrees}
+      {school && (
+        <DegreePicker
+          university={university}
+          school={school}
           selected={degree}
           onChange={(v) => onUpdate({ degrees: v ? [v] : [] })}
         />

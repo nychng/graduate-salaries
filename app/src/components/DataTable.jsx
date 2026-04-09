@@ -40,12 +40,12 @@ export default function DataTable({ data, metric }) {
     <div className="overflow-x-auto">
       <table className="w-full text-left text-xs">
         <thead>
-          <tr className="border-b border-gray-200">
+          <tr className="border-b-2 border-ink">
             {columns.map((col) => (
               <th
                 key={col.key}
                 onClick={() => handleSort(col.key)}
-                className={`px-3 py-2 font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-900 ${col.width}`}
+                className={`px-3 py-2 text-[10px] uppercase tracking-[0.15em] text-muted font-medium cursor-pointer hover:text-ink ${col.width}`}
               >
                 {col.label}
                 {sortCol === col.key && (
@@ -57,20 +57,20 @@ export default function DataTable({ data, metric }) {
         </thead>
         <tbody>
           {sorted.slice(0, 100).map((row, i) => (
-            <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
-              <td className="px-3 py-2 text-gray-900 font-medium">{row.year}</td>
-              <td className="px-3 py-2 text-gray-600">{UNI_SHORT[row.university] || row.university}</td>
-              <td className="px-3 py-2 text-gray-600">{row.school}</td>
-              <td className="px-3 py-2 text-gray-600">{row.degree}</td>
-              <td className="px-3 py-2 text-gray-900 font-medium">
-                {row[metric] != null ? fmt(row[metric]) : '—'}
+            <tr key={i} className="border-b border-rule hover:bg-white/50">
+              <td className="px-3 py-2 text-ink tabular-nums">{row.year}</td>
+              <td className="px-3 py-2 text-muted">{UNI_SHORT[row.university] || row.university}</td>
+              <td className="px-3 py-2 text-muted">{row.school}</td>
+              <td className="px-3 py-2 text-ink">{row.degree}</td>
+              <td className="px-3 py-2 text-ink font-medium tabular-nums">
+                {row[metric] != null ? fmt(row[metric]) : '\u2014'}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       {sorted.length > 100 && (
-        <p className="text-xs text-gray-400 mt-2 px-3">
+        <p className="text-xs text-muted mt-3 px-3 italic">
           Showing 100 of {sorted.length} rows
         </p>
       )}

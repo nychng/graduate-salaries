@@ -1,0 +1,55 @@
+---
+import '../index.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+}
+
+const {
+  title = 'Singapore Graduate Employment Survey 2013-2025 | Salary & Employment Data for NTU, NUS, SIT, SMU, SUSS, SUTD',
+  description = 'Explore graduate employment outcomes and salaries from Singapore\'s six autonomous universities (NTU, NUS, SIT, SMU, SUSS, SUTD). Compare gross monthly salaries, employment rates, and trends from 2013 to 2025 by university, school, and degree. Data from the MOE Joint Graduate Employment Survey.',
+  ogTitle = 'Singapore Graduate Employment Survey Explorer (2013-2025)',
+  ogDescription = 'Compare graduate salaries and employment rates across NTU, NUS, SIT, SMU, SUSS and SUTD. Interactive charts with data from the MOE Graduate Employment Survey.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  </head>
+  <body class="antialiased bg-cream text-ink">
+    <nav class="border-b border-rule">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <a href="/" class="font-serif text-lg font-bold tracking-tight text-ink hover:text-accent transition-colors">
+          GES Explorer
+        </a>
+        <div class="flex items-center gap-6">
+          <a href="/" class="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors">
+            Explorer
+          </a>
+          <a href="/blog/" class="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors">
+            Blog
+          </a>
+          <a href="/blog/relevant-dilbert-comic/" class="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors">
+            Relevant Dilbert Comic
+          </a>
+        </div>
+      </div>
+    </nav>
+    <slot />
+  </body>
+</html>

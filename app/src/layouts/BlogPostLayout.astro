@@ -1,0 +1,65 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  author?: string;
+}
+
+const { title, description, pubDate, updatedDate, author = 'GES Explorer' } = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-SG', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const formattedUpdated = updatedDate?.toLocaleDateString('en-SG', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={`${title} | GES Explorer`}
+  description={description}
+  ogTitle={title}
+  ogDescription={description}
+>
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <article>
+      <header class="mb-10 border-b border-rule pb-8">
+        <a href="/blog/" class="text-[10px] uppercase tracking-[0.15em] text-muted hover:text-ink transition-colors mb-6 inline-block">&larr; Back to blog</a>
+        <h1 class="font-serif text-4xl sm:text-5xl font-bold text-ink tracking-tight leading-tight mb-4">{title}</h1>
+        <div class="flex items-center gap-3 text-xs text-muted">
+          <span>{author}</span>
+          <span>&middot;</span>
+          <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+          {formattedUpdated && (
+            <>
+              <span>&middot;</span>
+              <span>Updated {formattedUpdated}</span>
+            </>
+          )}
+        </div>
+      </header>
+      <div class="prose prose-lg max-w-none
+        prose-headings:font-serif prose-headings:text-ink prose-headings:tracking-tight
+        prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-b prose-h2:border-rule prose-h2:pb-2
+        prose-p:text-ink/80 prose-p:leading-relaxed
+        prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+        prose-strong:text-ink
+        prose-table:text-sm
+        prose-th:text-[10px] prose-th:uppercase prose-th:tracking-[0.15em] prose-th:text-muted prose-th:font-medium prose-th:border-b-2 prose-th:border-ink prose-th:py-2
+        prose-td:py-2.5 prose-td:border-b prose-td:border-rule prose-td:text-ink/80
+        prose-hr:border-rule
+        prose-blockquote:border-accent prose-blockquote:text-muted prose-blockquote:italic
+      ">
+        <slot />
+      </div>
+    </article>
+  </main>
+</BaseLayout>

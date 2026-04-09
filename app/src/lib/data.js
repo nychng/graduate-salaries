@@ -44,6 +44,27 @@ export const METRICS = {
 
 export const data = rawData;
 
+// Degrees that were reclassified between schools
+export const RECLASSIFICATIONS = [
+  {
+    university: 'Nanyang Technological University',
+    school: 'College of Computing and Data Science',
+    degrees: ['Computer Engineering', 'Computer Science', 'Data Science and Artificial Intelligence'],
+    fromSchool: 'College of Engineering',
+    year: 2024,
+    note: 'Prior to 2024, this degree was offered under College of Engineering.',
+  },
+];
+
+export function getReclassificationNote(university, school, degree) {
+  for (const r of RECLASSIFICATIONS) {
+    if (r.university === university && r.school === school && r.degrees.includes(degree)) {
+      return r.note;
+    }
+  }
+  return null;
+}
+
 export function getUniversities() {
   return [...new Set(data.map((r) => r.university))].sort();
 }
@@ -60,6 +81,23 @@ export function getDegrees(universities, schools) {
   if (universities.length) filtered = filtered.filter((r) => universities.includes(r.university));
   if (schools.length) filtered = filtered.filter((r) => schools.includes(r.school));
   return [...new Set(filtered.map((r) => r.degree))].sort();
+}
+
+// Build a set of degrees that have 2025 data (within a given university + school context)
+export function getDegreeSplit(universities, schools) {
+  let filtered = data;
+  if (universities.length) filtered = filtered.filter((r) => universities.includes(r.university));
+  if (schools.length) filtered = filtered.filter((r) => schools.includes(r.school));
+
+  const has2025 = new Set(
+    filtered.filter((r) => r.year === 2025).map((r) => r.degree)
+  );
+  const allDegrees = [...new Set(filtered.map((r) => r.degree))].sort();
+
+  return {
+    current: allDegrees.filter((d) => has2025.has(d)),
+    historical: allDegrees.filter((d) => !has2025.has(d)),
+  };
 }
 
 export function getFilteredData(universities, schools, degrees) {
