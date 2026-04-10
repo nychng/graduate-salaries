@@ -11,7 +11,7 @@ function SingleSelect({ label, options, selected, onChange, renderOption }) {
 
   return (
     <div>
-      <label className="block text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
+      <label className="block text-[14px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
         {label}
       </label>
       <div className="flex flex-wrap gap-1.5">
@@ -72,7 +72,7 @@ function DegreePicker({ university, school, selected, onChange }) {
     <div className="space-y-4">
       {current.length > 0 && (
         <div>
-          <label className="block text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
+          <label className="block text-[14px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
             Current Degrees
           </label>
           <div className="flex flex-wrap gap-1.5">
@@ -82,7 +82,7 @@ function DegreePicker({ university, school, selected, onChange }) {
       )}
       {historical.length > 0 && (
         <div>
-          <label className="block text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
+          <label className="block text-[14px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
             Historical Degrees
           </label>
           <div className="flex flex-wrap gap-1.5">

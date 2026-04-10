@@ -7,9 +7,10 @@ interface Props {
   pubDate: Date;
   updatedDate?: Date;
   author?: string;
+  ogImage?: string;
 }
 
-const { title, description, pubDate, updatedDate, author = 'GES Explorer' } = Astro.props;
+const { title, description, pubDate, updatedDate, author = 'GES Explorer', ogImage } = Astro.props;
 
 const formattedDate = pubDate.toLocaleDateString('en-SG', {
   year: 'numeric',
@@ -28,6 +29,7 @@ const formattedUpdated = updatedDate?.toLocaleDateString('en-SG', {
   description={description}
   ogTitle={title}
   ogDescription={description}
+  ogImage={ogImage}
 >
   <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
     <article>

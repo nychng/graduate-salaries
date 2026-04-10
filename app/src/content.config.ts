@@ -9,6 +9,7 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     author: z.string().default('GES Explorer'),
+    ogImage: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

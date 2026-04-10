@@ -6,14 +6,22 @@ interface Props {
   description?: string;
   ogTitle?: string;
   ogDescription?: string;
+  ogImage?: string;
 }
+
+const SITE_URL = 'https://graduatesalary.co';
+const DEFAULT_OG_IMAGE = '/og/default.png';
 
 const {
   title = 'Singapore Graduate Employment Survey 2013-2025 | Salary & Employment Data for NTU, NUS, SIT, SMU, SUSS, SUTD',
   description = 'Explore graduate employment outcomes and salaries from Singapore\'s six autonomous universities (NTU, NUS, SIT, SMU, SUSS, SUTD). Compare gross monthly salaries, employment rates, and trends from 2013 to 2025 by university, school, and degree. Data from the MOE Joint Graduate Employment Survey.',
   ogTitle = 'Singapore Graduate Employment Survey Explorer (2013-2025)',
   ogDescription = 'Compare graduate salaries and employment rates across NTU, NUS, SIT, SMU, SUSS and SUTD. Interactive charts with data from the MOE Graduate Employment Survey.',
+  ogImage = DEFAULT_OG_IMAGE,
 } = Astro.props;
+
+const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`;
+const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).toString();
 ---
 
 <!doctype html>
@@ -32,9 +40,18 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={absoluteOgImage} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet" />

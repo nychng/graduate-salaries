@@ -89,6 +89,21 @@ SCHOOL_NORMALIZE_PATTERNS = [
     (r"^School of Computing & Information Systems.*Computing & Law.*", "School of Computing & Information Systems – Computing & Law"),
 ]
 
+# Exact "X & Y" -> "X and Y" merges. Only pairs where both spellings exist
+# in the raw data under the same university + school.
+AMPERSAND_PAIRS = {
+    "Art, Design & Media": "Art, Design and Media",
+    "Biomedical Sciences & Chinese Medicine": "Biomedical Sciences and Chinese Medicine",
+    "Chemical & Biomolecular Engineering": "Chemical and Biomolecular Engineering",
+    "Electrical & Electronic Engineering": "Electrical and Electronic Engineering",
+    "Information Engineering & Media": "Information Engineering and Media",
+    "Linguistics & Multilingual Studies": "Linguistics and Multilingual Studies",
+    "Mathematics & Economics": "Mathematics and Economics",
+    "Bachelor of Engineering with Honours in Mechanical Design & Manufacturing Engineering": "Bachelor of Engineering with Honours in Mechanical Design and Manufacturing Engineering",
+    "Bachelor of Science in Computer Science & Game Design": "Bachelor of Science in Computer Science and Game Design",
+    "Bachelor of Science with Honours in Food & Human Nutrition": "Bachelor of Science with Honours in Food and Human Nutrition",
+}
+
 
 def normalize_school(name, university=""):
     """Normalize school name to canonical form."""
@@ -124,6 +139,23 @@ def normalize_degree(name):
     name = name.replace(' Majoring ', ' majoring ')
     # Normalize "ElectroMechanical" -> "Electromechanical"
     name = name.replace('ElectroMechanical', 'Electromechanical')
+    # Collapse any accidental double spaces from the raw source
+    name = re.sub(r'\s{2,}', ' ', name)
+    # NTU 2017 reported degrees in long form. Strip the "Bachelor of X (Hons)"
+    # wrapper so they merge with the short-form degrees used in other years.
+    #   "Bachelor of Engineering (Hons) (Aerospace Engineering)" -> "Aerospace Engineering"
+    #   "Bachelor of Arts (Hons) in Economics" -> "Economics"
+    m = re.match(r'^Bachelor of (?:Engineering|Science|Arts) \(Hons\) \((.+)\)$', name)
+    if m:
+        name = m.group(1)
+    m = re.match(r'^Bachelor of (?:Science|Arts) \(Hons\) in (.+)$', name)
+    if m:
+        name = m.group(1)
+    # NTU 2017 one-off long-form names that don't match the (Hons) (X) pattern
+    if name == 'Bachelor of Communication Studies (Hons)':
+        name = 'Communication Studies'
+    if name == 'Bachelor of Fine Arts (Hons)':
+        name = 'Art, Design and Media'
     # Normalize "Art, Design & Media" -> "Art, Design and Media"
     name = name.replace('Art, Design & Media', 'Art, Design and Media')
     # Normalize Sport/Sports Science variants
@@ -132,6 +164,20 @@ def normalize_degree(name):
     # Normalize Interdisciplinary Double Major variants
     if 'nter' in name and 'isciplin' in name and ('Double' in name or 'Integrated' in name):
         name = 'Interdisciplinary Double Major'
+    # Exact "&" -> "and" merges where both variants exist in the same
+    # university + school (discovered by comparing raw CSV degree names).
+    # Keeps proper-name programs like "Computing & Law" untouched.
+    if name in AMPERSAND_PAIRS:
+        name = AMPERSAND_PAIRS[name]
+    # Normalize Linguistics and Multilingual Studies variants
+    if 'Linguistics' in name and 'Multilingual Studies' in name:
+        name = 'Linguistics and Multilingual Studies'
+    # Normalize Biomedical Science (singular) to Biomedical Sciences
+    if name == 'Biomedical Science':
+        name = 'Biomedical Sciences'
+    # Normalize Chemistry & Biological Chemistry variants
+    if 'Chemistry' in name and 'Biological Chemistry' in name:
+        name = 'Chemistry and Biological Chemistry'
     # Normalize Physics and Applied Physics variants
     if 'Physics' in name and 'Applied Physics' in name:
         name = 'Physics and Applied Physics'
@@ -365,6 +411,32 @@ def main():
             row["school"] = "College of Computing and Data Science"
             reclassified += 1
     print(f"Reclassified {reclassified} NTU rows from College of Engineering to CCDS")
+
+    # Fix NTU 2017 source data: many CoHASS degrees were mistakenly listed
+    # under "College of Engineering" in the raw CSV. Move them to CoHASS
+    # (where they appear in every other year).
+    COHASS_DEGREES = {
+        "Art, Design and Media",
+        "Chinese",
+        "Communication Studies",
+        "Economics",
+        "English",
+        "History",
+        "Linguistics and Multilingual Studies",
+        "Philosophy",
+        "Psychology",
+        "Public Policy and Global Affairs",
+        "Sociology",
+    }
+    cohass_fixes = 0
+    for row in all_data:
+        if (row["university"] == "Nanyang Technological University"
+                and row["year"] == 2017
+                and row["degree"] in COHASS_DEGREES
+                and row["school"] == "College of Engineering"):
+            row["school"] = "College of Humanities, Arts & Social Sciences"
+            cohass_fixes += 1
+    print(f"Fixed {cohass_fixes} NTU 2017 rows misplaced under College of Engineering")
 
     print(f"Total combined: {len(all_data)} rows")
 

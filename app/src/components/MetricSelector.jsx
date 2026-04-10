@@ -54,7 +54,7 @@ export default function MetricSelector({ selected, onChange }) {
 
   return (
     <div>
-      <label className="block text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
+      <label className="block text-[14px] uppercase tracking-[0.15em] text-muted font-medium mb-2">
         Metric
       </label>
       <div className="flex flex-wrap gap-x-6 gap-y-2">
