@@ -44,7 +44,8 @@ export const METRICS = {
 
 export const data = rawData;
 
-// Degrees that were reclassified between schools
+// Degrees that were reclassified between schools. If `degrees` is omitted,
+// the note applies to every degree under the school.
 export const RECLASSIFICATIONS = [
   {
     university: 'Nanyang Technological University',
@@ -54,11 +55,19 @@ export const RECLASSIFICATIONS = [
     year: 2024,
     note: 'Prior to 2024, this degree was offered under College of Engineering.',
   },
+  {
+    university: 'National University of Singapore',
+    school: 'College of Design and Engineering',
+    fromSchool: 'Faculty of Engineering / School of Design & Environment',
+    year: 2022,
+    note: 'Prior to 2022, this degree was offered under Faculty of Engineering or School of Design & Environment, which merged to form the College of Design and Engineering.',
+  },
 ];
 
 export function getReclassificationNote(university, school, degree) {
   for (const r of RECLASSIFICATIONS) {
-    if (r.university === university && r.school === school && r.degrees.includes(degree)) {
+    if (r.university !== university || r.school !== school) continue;
+    if (!r.degrees || r.degrees.includes(degree)) {
       return r.note;
     }
   }

@@ -41,7 +41,8 @@ SCHOOL_NORMALIZE = {
     "Sports Science and Management": "College of Humanities, Arts & Social Sciences",
     # NUS
     "Faculty Of Dentistry": "Faculty of Dentistry",
-    "Faculty Of Engineering": "Faculty of Engineering",
+    "Faculty Of Engineering": "College of Design and Engineering",
+    "Faculty of Engineering": "College of Design and Engineering",
     "Multi-Disciplinary Programme": "Multi-Disciplinary Programmes",
     "Multidisciplinary Programmes": "Multi-Disciplinary Programmes",
     "YLL School of Medicine": "Yong Loo Lin School of Medicine",

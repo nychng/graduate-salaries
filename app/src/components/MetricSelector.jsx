@@ -12,7 +12,7 @@ const SHORT_LABELS = {
 };
 
 export const FOOTNOTES = [
-  { label: 'Employment Rate', text: 'Full-time permanent employment refers to employment of at least 35 hours a week and where the employment is not temporary. It includes those on contracts of one year or more.' },
+  { label: 'Employment Rate', text: 'Employment rates refer to the number of graduates employed as a proportion of graduates in the labour force (i.e. those who were working, or not working but actively looking and available for work) approximately six months after completing their final examinations. Full-time permanent employment refers to employment of at least 35 hours a week and where the employment is not temporary. It includes those on contracts of one year or more.' },
   { label: 'Gross Salary', text: 'Gross monthly salary pertains only to full-time permanently employed graduates. It comprises basic salary, overtime payments, commissions, fixed allowances and other regular cash payments, before deductions of the employee\u2019s CPF contributions and personal income tax. Employer\u2019s CPF contributions, bonuses, stock options, lump sum payments, and payments-in-kind are excluded.' },
 ];
 

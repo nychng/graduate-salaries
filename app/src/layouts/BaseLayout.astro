@@ -19,6 +19,14 @@ const {
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LG0QWKB4BK"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LG0QWKB4BK');
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,14 +46,20 @@ const {
           GES Explorer
         </a>
         <div class="flex items-center gap-6">
-          <a href="/" class="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors">
-            Explorer
-          </a>
           <a href="/blog/" class="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors">
             Blog
           </a>
+          <a href="/blog/top-10-graduate-salaries-2025/" class="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors">
+            Top 10 Graduate Salaries
+          </a>
           <a href="/blog/relevant-dilbert-comic/" class="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors">
             Relevant Dilbert Comic
+          </a>
+          <a href="https://www.lasalle.edu.sg/alumni-relations/digital-certificates/graduate-employment-survey-2024/" target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors">
+            LaSalle GES
+          </a>
+          <a href="https://www.nafa.edu.sg/experience/why-nafa/graduate-employment-survey" target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-widest text-muted hover:text-ink transition-colors">
+            NAFA GES
           </a>
         </div>
       </div>

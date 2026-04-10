@@ -85,7 +85,7 @@ function App() {
           </div>
           <div className="border-t border-rule pt-4">
             <p className="text-[11px] leading-relaxed text-muted">
-              <span className="font-semibold text-ink">Data reclassifications:</span> Some degrees have been reclassified across schools or renamed over the years to maintain a continuous time series. For example, NTU Computer Science, Computer Engineering, and Data Science & AI are shown under College of Computing and Data Science for all years, though they were offered under College of Engineering prior to 2024. SMU degree variants (e.g. "Accountancy (4-year programme)") have been normalized to their current names, and "Cum Laude and above" entries have been unified across naming conventions. If you spot any errors in the data or reclassifications, please <a href="" className="text-accent hover:underline">let us know</a>.
+              <span className="font-semibold text-ink">Data reclassifications:</span> Some degrees have been reclassified across schools or renamed over the years to maintain a continuous time series. See the full list of <a href="/blog/data-reclassifications/" className="text-accent hover:underline">data reclassifications</a> for details. If you spot any errors, please let us know.
             </p>
           </div>
           <p className="text-center text-[10px] text-muted pt-2">

@@ -1,15 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const DEFAULT_STATE = {
+const EMPTY_STATE = {
   universities: [],
   schools: [],
   degrees: [],
   metric: 'gross_monthly_median',
 };
 
+const DEFAULT_STATE = {
+  universities: ['Nanyang Technological University'],
+  schools: ['College of Business (Nanyang Business School)'],
+  degrees: ['Accountancy'],
+  metric: 'gross_monthly_median',
+};
+
 function parseHash() {
-  if (typeof window === 'undefined') return DEFAULT_STATE;
+  if (typeof window === 'undefined') return EMPTY_STATE;
   const hash = window.location.hash.slice(1);
+  // No hash at all -> use the default selection so the page loads with data
+  if (!hash) return DEFAULT_STATE;
   const params = new URLSearchParams(hash);
   return {
     universities: params.get('u') ? params.get('u').split('|') : [],
